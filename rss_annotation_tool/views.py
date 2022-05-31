@@ -8,47 +8,44 @@ from django.views.generic import TemplateView
 from django.views.generic import FormView, View
 from .forms import NewUserForm
 
+
 class HomeView(LoginRequiredMixin, TemplateView):
-    login_url = '/users/auth/login'
+    login_url = "/users/auth/login"
     template_name = "index.html"
-    
+
     def get(self, request: HttpRequest) -> HttpResponse:
         return render(request, self.template_name)
-    
-    
+
+
 class LoginUserView(LoginView):
-    
     def post(self, request: HttpRequest) -> HttpResponse:
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
-        
+
         if user:
             login(request, user)
             return redirect("home")
         else:
             return redirect("login")
 
-        
+
 class LogoutUserView(View):
-    
     def get(self, request: HttpRequest) -> HttpResponse:
-        
+
         logout(request)
         return redirect("home")
-        
+
 
 class RegisterUserView(FormView):
     template_name: str = "auth_templates/register.html"
-    form_class= NewUserForm
-    
+    form_class = NewUserForm
+
     def get(self, request: HttpRequest) -> HttpResponse:
-        context = {
-            'form': self.form_class()
-        }
-        
+        context = {"form": self.form_class()}
+
         return render(request, self.template_name, context)
-    
+
     def post(self, request: HttpRequest) -> HttpResponse:
         form = NewUserForm(request.POST)
 
@@ -56,5 +53,5 @@ class RegisterUserView(FormView):
             user = form.save()
             login(request, user)
             return redirect("home")
-        
+
         return redirect("register_user")
