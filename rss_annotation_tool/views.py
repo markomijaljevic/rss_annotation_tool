@@ -9,18 +9,20 @@ from django.views.generic import FormView, View
 from .forms import NewUserForm
 from .Scrapper.Scrapper import RSScrapper
 
+
 class HomeView(LoginRequiredMixin, TemplateView):
     login_url = "/users/auth/login"
     template_name = "index.html"
 
     def get(self, request: HttpRequest) -> HttpResponse:
-        
-        urls_to_scrape = ["http://www.nu.nl/rss/Algemeen", "https://feeds.feedburner.com/tweakers/mixed"]
+
+        urls_to_scrape = [
+            "http://www.nu.nl/rss/Algemeen",
+            "https://feeds.feedburner.com/tweakers/mixed",
+        ]
         scrapper = RSScrapper(urls_to_scrape)
-        
-        context = {
-            'feeds' : scrapper.get_rss_feeds()
-        }
+
+        context = {"feeds": scrapper.get_rss_feeds()}
         return render(request, self.template_name, context)
 
 
