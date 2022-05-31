@@ -18,6 +18,17 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.home, name="home"),
+    path(route="admin/", view=admin.site.urls),
+    path(route="", view=views.HomeView.as_view(), name="home"),
+    path(
+        route="users/auth/login",
+        view=views.LoginUserView.as_view(template_name="auth_templates/login.html"),
+        name="login",
+    ),
+    path(
+        route="users/auth/logout",
+        view=views.LogoutUserView.as_view(),
+        name="logout",
+    ),
+    path(route='users/auth/register', view=views.RegisterUserView.as_view() , name="register_user")
 ]
