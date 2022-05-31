@@ -7,14 +7,21 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views.generic import FormView, View
 from .forms import NewUserForm
-
+from .Scrapper.Scrapper import RSScrapper
 
 class HomeView(LoginRequiredMixin, TemplateView):
     login_url = "/users/auth/login"
     template_name = "index.html"
 
     def get(self, request: HttpRequest) -> HttpResponse:
-        return render(request, self.template_name)
+        
+        urls_to_scrape = ["http://www.nu.nl/rss/Algemeen", "https://feeds.feedburner.com/tweakers/mixed"]
+        scrapper = RSScrapper(urls_to_scrape)
+        
+        context = {
+            'feeds' : scrapper.get_rss_feeds()
+        }
+        return render(request, self.template_name, context)
 
 
 class LoginUserView(LoginView):

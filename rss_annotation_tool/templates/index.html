@@ -1,2 +1,20 @@
-{{ request.user.is_authenticated }}
-{{ request.user }}
+
+{% for feed in feeds %}
+    <h1>{{ feed.feed.title }}</h1>  
+    <table>
+        <tr>
+            {% for column_name, _ in feed.entries.0.items %}
+                <th>{{column_name}}</th>
+            {% endfor %}
+        </tr>
+
+        {% for entry in feed.entries %}
+            <tr>
+                {% for _, value in entry.items %}
+                    <td>{{ value|slice:":50" }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endfor %}
