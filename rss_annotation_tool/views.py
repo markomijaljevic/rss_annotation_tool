@@ -49,6 +49,7 @@ class LogoutUserView(View):
 
 class RegisterUserView(FormView):
     template_name: str = "auth_templates/register.html"
+    # FIXME: Replace NewUserForm to CreateUserForm (optional) using a verb as prefix is good for context
     form_class = NewUserForm
 
     def get(self, request: HttpRequest) -> HttpResponse:
