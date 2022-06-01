@@ -18,6 +18,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    # By default, you can use positional parameters for path
+    # eg: path("admin/", views.HomeView.as_view(), name="home")
     path(route="admin/", view=admin.site.urls),
     path(route="", view=views.HomeView.as_view(), name="home"),
     path(

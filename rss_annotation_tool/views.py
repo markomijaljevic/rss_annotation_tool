@@ -9,7 +9,7 @@ from django.views.generic import FormView, View
 from .forms import NewUserForm
 from .Scrapper.Scrapper import RSScrapper
 
-
+# Good for using LoginRequiredMixin 👍
 class HomeView(LoginRequiredMixin, TemplateView):
     login_url = "/users/auth/login"
     template_name = "index.html"
@@ -20,6 +20,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
             "http://www.nu.nl/rss/Algemeen",
             "https://feeds.feedburner.com/tweakers/mixed",
         ]
+        # Why did you choose to use feedparser instead of building your own feed parser?
         scrapper = RSScrapper(urls_to_scrape)
 
         context = {"feeds": scrapper.get_rss_feeds()}
