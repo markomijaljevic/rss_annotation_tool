@@ -74,8 +74,13 @@ class FeedArticleView(View):
     
     def post(self, request: HttpRequest, title_id) -> HttpResponse:
 
-        db_article = FeedArticle.objects.filter(title=title_id)[0]
-        db_article.comments = json.loads(request.body)['body']
-        db_article.save()
+        db_article = FeedArticle.objects.filter(title=title_id)
         
-        return HttpResponse("Success")
+        if db_article.exists():
+            db_article = db_article[0]
+            db_article.comments = json.loads(request.body)['body']
+            db_article.save()
+
+            return HttpResponse("Success")
+        
+        return HttpResponse("Article does not exist in the DB")

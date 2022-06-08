@@ -8,3 +8,4 @@ class FeedArticle(models.Model):
     summary = models.TextField()
     comments = models.TextField(blank=True)
     bookmarks = models.ManyToManyField(User, 'Bookmarks')
+    
