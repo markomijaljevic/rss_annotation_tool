@@ -3,15 +3,19 @@
     <h1>{{ feed.feed.title }}</h1>  
     <table>
         <tr>
+            <th></th>
+            <th></th>
             {% for column_name, _ in feed.entries.0.items %}
                 <th>{{column_name}}</th>
             {% endfor %}
         </tr>
 
         {% for entry in feed.entries %}
-            <tr>
+            <tr style="border:1px solid black;">
+                <td style="border:1px solid black;"><div style="padding:10px;background:gray;">Bookmark<div></td>
+                <td style="border:1px solid black;"><div style="padding:10px;background:gray;">Comment<div></td>
                 {% for _, value in entry.items %}
-                    <td>{{ value|slice:":50" }}</td>
+                    <td style="border:1px solid black;">{{ value|slice:":50" }}</td>
                 {% endfor %}
             </tr>
         {% endfor %}

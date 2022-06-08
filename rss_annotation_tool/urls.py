@@ -16,25 +16,26 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
+from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
     # By default, you can use positional parameters for path
     # eg: path("admin/", views.HomeView.as_view(), name="home")
-    path(route="admin/", view=admin.site.urls),
-    path(route="", view=views.HomeView.as_view(), name="home"),
+    path("admin/", admin.site.urls),
+    path("", views.HomeView.as_view(), name="home"),
     path(
-        route="users/auth/login",
-        view=views.LoginUserView.as_view(template_name="auth_templates/login.html"),
+        "users/auth/login",
+        LoginView.as_view(template_name="auth_templates/login.html", next_page="/"),
         name="login",
     ),
     path(
-        route="users/auth/logout",
-        view=views.LogoutUserView.as_view(),
+        "users/auth/logout",
+        LogoutView.as_view(next_page="/users/auth/login"),
         name="logout",
     ),
     path(
-        route="users/auth/register",
-        view=views.RegisterUserView.as_view(),
+        "users/auth/register",
+        views.RegisterUserView.as_view(),
         name="register_user",
     ),
 ]
