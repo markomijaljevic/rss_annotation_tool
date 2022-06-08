@@ -1,14 +1,14 @@
 from django.contrib.auth import login
-from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
 
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from django.views.generic import FormView
+from django.views.generic import FormView, View
 from .forms import NewUserForm
 from .Scrapper.Scrapper import get_rss_feeds
 from .models import FeedArticle
+import json
 
 # Good for using LoginRequiredMixin 👍
 class HomeView(LoginRequiredMixin, TemplateView):
@@ -69,3 +69,13 @@ class BookmarksView(FormView):
             feed_article.bookmarks.add(request.user)
         
         return redirect("home")
+    
+class FeedArticleView(View):
+    
+    def post(self, request: HttpRequest, title_id) -> HttpResponse:
+
+        db_article = FeedArticle.objects.filter(title=title_id)[0]
+        db_article.comments = json.loads(request.body)['body']
+        db_article.save()
+        
+        return HttpResponse("Success")

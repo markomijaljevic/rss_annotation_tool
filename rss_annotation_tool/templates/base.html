@@ -1,12 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>{% block title %}RSS annotation tool{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'rss_annotation_tool/style.css' %}"/>
 </head>
 
 <body>
     <div id="content">
         {% block content %}{% endblock %}
     </div>
+
+    <script src="{% static 'rss_annotation_tool/script.js' %}"></script>
 </body>
 </html>

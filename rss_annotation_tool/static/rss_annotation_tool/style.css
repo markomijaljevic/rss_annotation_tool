@@ -1,0 +1,17 @@
+.comment_wrapper {
+    position: absolute;
+    display: none;
+    width: 50%;
+    height: 500px;
+    left: 25%;
+    top: 25%;
+}
+
+.comment_wrapper textarea {
+    width: 100%;
+    height: 100%;
+}
+
+.comment_wrapper div:hover {
+    cursor: pointer;
+}

@@ -43,4 +43,9 @@ urlpatterns = [
         views.BookmarksView.as_view(),
         name="bookmarks",
     ),
+    path(
+        "feeds/article/<str:title_id>",
+        views.FeedArticleView.as_view(),
+        name="bookmarks",
+    ),
 ]

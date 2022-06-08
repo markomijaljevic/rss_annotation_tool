@@ -1,38 +1,51 @@
 
-{% for feed in feeds %}
-    <h1>{{ feed.feed.title }}</h1>  
-    <table>
-        <tr>
-            <th></th>
-            <th></th>
-            {% for column_name, _ in feed.entries.0.items %}
-                <th>{{column_name}}</th>
-            {% endfor %}
-        </tr>
+{% extends "base.html" %}
 
-        {% for entry in feed.entries %}
-            <tr style="border:1px solid black;">
+{% block content %}
 
-                <form method="post" action="{% url 'bookmarks' %}">
-                    {% csrf_token %}
-
-                    <td style="border:1px solid black;">
-                        <button style="padding:10px;background:gray;">Bookmark</button>
-                    </td>
-
-                    <td style="border:1px solid black;">
-                        <div style="padding:10px;background:gray;">Comment<div>
-                    </td>
-
-                    {% for column_name, value in entry.items %}
-                        <input type="hidden" name="{{column_name}}" value="{{value}}" />
-                        <td style="border:1px solid black;">{{ value|slice:":50" }}</td>
-                    {% endfor %}
-
-                </form>
-                
+    {% for feed in feeds %}
+        <h1>{{ feed.feed.title }}</h1>  
+        <table>
+            <tr>
+                <th></th>
+                <th></th>
+                {% for column_name, _ in feed.entries.0.items %}
+                    <th>{{column_name}}</th>
+                {% endfor %}
             </tr>
-        {% endfor %}
-    </table>
 
-{% endfor %}
+            {% for entry in feed.entries %}
+                
+                <div id="{{entry.title}}" class="comment_wrapper">
+                    <textarea placeholder="please add comment"></textarea>
+                    <div style="padding:10px;background:gray;" onclick='addComment("{{entry.title}}")'>Add Comment</div>
+                    <div style="padding:10px;background:gray;" onclick='closeCommentBox("{{entry.title}}")'>Close</div>
+                <div class="comment_wrapper">
+                
+                <tr style="border:1px solid black;">
+
+                    <form method="post" action="{% url 'bookmarks' %}">
+                        {% csrf_token %}
+
+                        <td style="border:1px solid black;">
+                            <button style="padding:10px;background:gray;">Bookmark</button>
+                        </td>
+
+                        <td style="border:1px solid black;">
+                            <div style="padding:10px;background:gray;" onclick='showCommentBox("{{entry.title}}")'>Comment</div>
+                        </td>
+
+                        {% for column_name, value in entry.items %}
+                            <input type="hidden" name="{{column_name}}" value="{{value}}" />
+                            <td style="border:1px solid black;">{{ value|slice:":50" }}</td>
+                        {% endfor %}
+
+                    </form>
+
+                </tr>
+            {% endfor %}
+        </table>
+
+    {% endfor %}
+
+{% endblock %}
