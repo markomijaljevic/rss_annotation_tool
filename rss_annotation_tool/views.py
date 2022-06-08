@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views.generic import FormView, View
 from .forms import CreateUserForm
-from .Scrapper.Scrapper import get_rss_feeds
+from .Scraper.Scraper import get_rss_feeds
 from .models import FeedArticle
 import json
 
