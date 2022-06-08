@@ -38,4 +38,9 @@ urlpatterns = [
         views.RegisterUserView.as_view(),
         name="register_user",
     ),
+    path(
+        "users/bookmarks",
+        views.BookmarksView.as_view(),
+        name="bookmarks",
+    ),
 ]

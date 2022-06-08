@@ -1,13 +1,14 @@
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login
+from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
-from django.contrib.auth.views import LoginView
 
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from django.views.generic import FormView, View
+from django.views.generic import FormView
 from .forms import NewUserForm
 from .Scrapper.Scrapper import get_rss_feeds
+from .models import FeedArticle
 
 # Good for using LoginRequiredMixin 👍
 class HomeView(LoginRequiredMixin, TemplateView):
@@ -44,3 +45,27 @@ class RegisterUserView(FormView):
             return redirect("home")
 
         return redirect("register_user")
+
+class BookmarksView(FormView):
+    
+    def post(self, request: HttpRequest) -> HttpResponse:
+        title = request.POST.get('title')
+        link = request.POST.get('link')
+        summary = request.POST.get('summary')
+        
+        db_article = FeedArticle.objects.filter(title=title)
+        
+        if db_article.exists():
+            feed_article = db_article[0]
+            feed_article.bookmarks.add(request.user)
+        else:
+            feed_article = FeedArticle()
+        
+            feed_article.title = title
+            feed_article.link = link
+            feed_article.summary = summary
+            feed_article.save()
+            
+            feed_article.bookmarks.add(request.user)
+        
+        return redirect("home")
